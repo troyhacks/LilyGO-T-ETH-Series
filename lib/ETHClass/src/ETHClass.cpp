@@ -344,8 +344,8 @@ bool ETHClass::beginSPI( int miso, int mosi, int sck, int cs, int rst, int irq,
     byte address[] = {
         0x02, 0x00, 0x00, 0x12, 0x34, 0x56
     };
-    WiFi.macAddress(address);
-    address[5] += 1;
+    WiFi.macAddress(address); // let's use the wifi mac
+    address[5] += 1; // and just increment the last octet by 1
     esp_eth_ioctl(eth_handle, ETH_CMD_S_MAC_ADDR, address );
 
 
