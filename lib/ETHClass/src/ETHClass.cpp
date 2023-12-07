@@ -344,6 +344,8 @@ bool ETHClass::beginSPI( int miso, int mosi, int sck, int cs, int rst, int irq,
     uint8_t  address[] = {
         0x02, 0x00, 0x00, 0x12, 0x34, 0x56
     };
+    esp_wifi_get_mac(WIFI_IF_STA,address);
+    address[5] += 1;
     esp_eth_ioctl(eth_handle, ETH_CMD_S_MAC_ADDR, address );
 
 
@@ -759,17 +761,6 @@ uint8_t *ETHClass::macAddress(uint8_t *mac)
 #else
     esp_eth_get_mac(mac);
 #endif
-    return mac;
-}
-
-uint8_t *ETHClass::setMacAddress(uint8_t *mac)
-{
-    if (!mac) {
-        return NULL;
-    }
-    
-    esp_eth_ioctl(eth_handle, ETH_CMD_S_MAC_ADDR, mac);
-
     return mac;
 }
 
