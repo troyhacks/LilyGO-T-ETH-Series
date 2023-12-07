@@ -341,10 +341,10 @@ bool ETHClass::beginSPI( int miso, int mosi, int sck, int cs, int rst, int irq,
     /* The SPI Ethernet module might not have a burned factory MAC address, we cat to set it manually.
        02:00:00 is a Locally Administered OUI range so should not be used except when testing on a LAN under your control.
        */
-    uint8_t  address[] = {
+    byte address[] = {
         0x02, 0x00, 0x00, 0x12, 0x34, 0x56
     };
-    WiFi.esp_wifi_get_mac(WIFI_IF_STA,address);
+    WiFi.macAddress(address);
     address[5] += 1;
     esp_eth_ioctl(eth_handle, ETH_CMD_S_MAC_ADDR, address );
 
