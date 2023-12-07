@@ -106,6 +106,7 @@ public:
     uint8_t subnetCIDR();
 
     uint8_t *macAddress(uint8_t *mac);
+    uint8_t *setMacAddress(uint8_t *mac);
     String macAddress();
 
     friend class WiFiClient;
