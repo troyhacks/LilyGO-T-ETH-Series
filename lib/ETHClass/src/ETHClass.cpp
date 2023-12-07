@@ -344,7 +344,7 @@ bool ETHClass::beginSPI( int miso, int mosi, int sck, int cs, int rst, int irq,
     uint8_t  address[] = {
         0x02, 0x00, 0x00, 0x12, 0x34, 0x56
     };
-    esp_wifi_get_mac(WIFI_IF_STA,address);
+    WiFi.esp_wifi_get_mac(WIFI_IF_STA,address);
     address[5] += 1;
     esp_eth_ioctl(eth_handle, ETH_CMD_S_MAC_ADDR, address );
 
