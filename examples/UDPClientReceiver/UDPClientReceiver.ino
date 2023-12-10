@@ -12,13 +12,13 @@
 #include <SPI.h>
 #include <SD.h>
 #include "utilities.h"          //Board PinMap
+#include "AsyncUDP.h"
 
 //The udp library class
-WiFiUDP udp;
+// WiFiUDP udp;
+AsyncUDP udp;
 
-
-const int udpPort = 3333;
-
+const int udpPort = 6454;
 
 static bool eth_connected = false;
 
@@ -41,19 +41,12 @@ void WiFiEvent(WiFiEvent_t event)
         if (ETH.fullDuplex()) {
             Serial.print(", FULL_DUPLEX");
         }
-
         Serial.print(", ");
         Serial.print(ETH.linkSpeed());
         Serial.println("Mbps");
         eth_connected = true;
-
-        //initializes the UDP state
-        //This initializes the transfer buffer
-        Serial.print("Start UDP receiver to ");
-        Serial.print(udpPort);
-        Serial.println(" Port");
-        udp.begin(WiFi.localIP(), udpPort);
-
+        Serial.print("Starting UDP listener on port ");
+        Serial.println(udpPort);
         break;
     case ARDUINO_EVENT_ETH_DISCONNECTED:
         Serial.println("ETH Disconnected");
@@ -98,13 +91,36 @@ void setup()
 
 }
 
-void loop()
-{
+void loop() {
+
     if (eth_connected) {
-        if (udp.parsePacket() > 0) {
-            while (udp.available()) {
-                Serial.write(udp.read());
-            }
+
+        if(udp.listen(udpPort)) {
+
+            udp.onPacket([](AsyncUDPPacket packet) {
+
+                Serial.print("UDP Packet Type: ");
+                Serial.print(packet.isBroadcast()?"Broadcast":packet.isMulticast()?"Multicast":"Unicast");
+                Serial.print(", From: ");
+                Serial.print(packet.remoteIP());
+                Serial.print(":");
+                Serial.print(packet.remotePort());
+                Serial.print(", To: ");
+                Serial.print(packet.localIP());
+                Serial.print(":");
+                Serial.print(packet.localPort());
+                Serial.print(", Length: ");
+                Serial.print(packet.length());
+                Serial.print(", Data: ");
+                Serial.write(packet.data(), packet.length());
+                Serial.println();
+                //reply to the client
+                packet.printf("Got %u bytes of data\n", packet.length());
+
+            });
+
         }
+
     }
+
 }
