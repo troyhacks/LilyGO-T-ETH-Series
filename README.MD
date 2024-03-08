@@ -44,6 +44,8 @@ examples/
 ├── UDPClientSenderDirectPC     # UDP Sender, Directly connect to PC using network cable
 ├── AsyncUDPClient              # Async UDP Client
 ├── AsyncUDPServer              # Async UDP Sender
+├── WebSocketClient             # WebSocket Client
+├── WebSocketServer             # WebSocket Server
 ├── UnitTestExample             # Hardware test exampe
 ├── TCPClient                   # TCP Client
 ├── TCPServer                   # TCP Server
@@ -75,6 +77,8 @@ examples/
 | AsyncUDPClient            | ✅                   | ✅                 | ✅                | ✅                     | ✅                       |
 | AsyncUDPServer            | ✅                   | ✅                 | ✅                | ✅                     | ✅                       |
 | UnitTestExample           | ✅                   | ✅                 | ✅                | ✅                     | ✅                       |
+| WebSocketClient           | ✅                   | ✅                 | ✅                | ✅                     | ✅                       |
+| WebSocketServer           | ✅                   | ✅                 | ✅                | ✅                     | ✅                       |
 | TCPClient                 | ✅                   | ✅                 | ✅                | ✅                     | ✅                       |
 | TCPServer                 | ✅                   | ✅                 | ✅                | ✅                     | ✅                       |
 | RS485_Master              | ❌   (Not adapted)   | ✅                 | ❌   (Can't run)  | ❌   (Not adapted)     | ❌   (Not adapted)       |
@@ -131,9 +135,18 @@ examples/
         | TX                   | TX                  | RXD          |
         | RTS                  |                     | RST          |
         | DTR                  |                     | IO0          |
+
+     * Connection diagram
+  
+        ![](./image/connect.jpg)
+
+     *  **Note that for boards that are not connected to DTR or RTS, the board must be put into download mode before uploading the sketch, otherwise the sketch cannot be uploaded.How to enter download mode, please see FAQ**
+     *  **注意，对于没有连接到DTR,RTS 的板子，上传程序之前，必须先将板子置入下载模式,否则无法上传程序，如何进入下载模式，请看FAQ**
+
+
 8. Select the corresponding port and click Upload <If the upload fails, View the FAQ below>
 9. Since **T-LITE-ESP32** uses **IO0** as the clock input, the default working level of **DTR** is high level, so after the download is completed, you need to remove the connection between **DTR** and **IO0**, so that ETH will work, otherwise the initialization will fail
-
+10. **T-LITE-ESP32** Since the `PHYAD` address is selected as 0, the yellow LINK light will not light up, which does not affect the use.
 
 <h2 align = "left">5️⃣ ESP32 basic examples </h2>
 
